@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
     Vector2 rotate;
 
     //Movimiento Relativo con respecto a la camara
-    public Transform camTransform;
+    Transform camTransform;
     public float forceMultiplier;
 
 
@@ -73,32 +73,21 @@ void Update()
 
         camF = camF.normalized;
         camR = camR.normalized;
-
-        /*
-        No lo voy a borrar porque es una joyita, pero no funca relativamente
-        Vector3 m = new Vector3(move.x,0f, move.y) * moveSpeed * Time.deltaTime*-1f;
-        transform.Translate(m,Space.World);
-        */
+        
         transform.position += (camR * move.x + camF * move.y) * moveSpeed *Time.deltaTime * -1f;
 
         if (rotate.magnitude > 0.1f)
         {
             float angle = Mathf.Atan2(rotate.y, rotate.x) * Mathf.Rad2Deg;
-            float relativeAngle = Mathf.Atan2(camF.z, camR.x) * Mathf.Rad2Deg;
+            float relativeAngle = Mathf.Atan2(camR.x,camF.z) * Mathf.Rad2Deg;
             //Si tenemos que modificar la rotacion, los valores que hay que modificar son el relative angle y el angulo de inicio (el 90, 270)
-            this.transform.rotation = Quaternion.Euler(new Vector3(0, angle + 270f + relativeAngle, 0)*-1f);
+            this.transform.rotation = Quaternion.Euler(new Vector3(0, angle +relativeAngle +45f, 0)*-1f);
         }
     }
      
 
     void OnAttack()
-    {          
-        BulletBehaviour bulletIns = Instantiate(bullet, shotPosition.position, shotPosition.rotation) as BulletBehaviour;
-        bulletIns.speed = shootSpeed;
-
-        fx_Shot.Play();  //(Valen)Acá le doy play al particle system y como no es loop, se hace one shot. Este fx no se destruye porque se usa varias veces, sino luego de darle play deberiamos destruirlo.
-
-        //bulletIns.velocity = shootSpeed * Vector3.forward;
-        //bulletIns.AddForce(Vector3.forward*shootSpeed, ForceMode.Impulse);
+    {
+        Instantiate(bullet, shotPosition.position, shotPosition.rotation);
     }   
 }

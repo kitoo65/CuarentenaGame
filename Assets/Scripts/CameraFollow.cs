@@ -40,7 +40,7 @@ public class CameraFollow : MonoBehaviour
     }
     void Zoom()
     {
-        float newZoom = Mathf.Lerp( minZoom, maxZoom, GetGreatestDistance() / zoomLimiter);
+        float newZoom = Mathf.Lerp(minZoom, maxZoom, GetGreatestDistance() / zoomLimiter);
         camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, newZoom, smoothSpeed * Time.deltaTime);
     }
 
@@ -53,15 +53,15 @@ public class CameraFollow : MonoBehaviour
         }
         return bounds.size.x;
     }
-    
+
     Vector3 GetCenterPoint()
     {
-        if(targets.Count == 1)
+        if (targets.Count == 1)
         {
             return targets[0].position;
         }
         var bounds = new Bounds(targets[0].position, Vector3.zero);
-        for(int i = 0; i< targets.Count; i++)
+        for (int i = 0; i < targets.Count; i++)
         {
             bounds.Encapsulate(targets[i].position);
         }
