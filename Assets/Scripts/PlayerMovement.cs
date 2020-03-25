@@ -64,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
 }
 
 
-void Update()
+    void Update()
     {
         Vector3 camF = -camTransform.forward;
         Vector3 camR = -camTransform.right;
