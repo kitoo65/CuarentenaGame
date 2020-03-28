@@ -23,11 +23,14 @@ public class PlayerMovement : MonoBehaviour
     PlayerControls controls;
 
     Vector2 move;
-    Vector2 rotate;
+    public Vector2 rotate;
+    public float angle;
+    public float relativeAngle;
+    public float rotationSpeed;
 
     //Movimiento Relativo con respecto a la camara
     Transform camTransform;
-    public float forceMultiplier;
+    public float modificadorAngle;
 
 
     private void Awake()
@@ -76,13 +79,16 @@ public class PlayerMovement : MonoBehaviour
         
         transform.position += (camR * move.x + camF * move.y) * moveSpeed *Time.deltaTime * -1f;
 
-        if (rotate.magnitude > 0.1f)
+        if (rotate.sqrMagnitude > 0.1f)
         {
-            float angle = Mathf.Atan2(rotate.y, rotate.x) * Mathf.Rad2Deg;
-            float relativeAngle = Mathf.Atan2(camR.x,camF.z) * Mathf.Rad2Deg;
+            angle = Mathf.Atan2(rotate.x, rotate.y) * Mathf.Rad2Deg;
+            relativeAngle = Mathf.Atan2(camR.x, camF.z) * Mathf.Rad2Deg;
             //Si tenemos que modificar la rotacion, los valores que hay que modificar son el relative angle y el angulo de inicio (el 90, 270)
-            this.transform.rotation = Quaternion.Euler(new Vector3(0, angle +relativeAngle +45f, 0)*-1f);
+           // this.transform.rotation = Quaternion.Euler(new Vector3(0, angle +relativeAngle + 45f, 0)*-1f);
+           transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(new Vector3(0, +angle+ relativeAngle-modificadorAngle, 0)), Time.deltaTime * rotationSpeed);
+
         }
+        
     }
      
 
